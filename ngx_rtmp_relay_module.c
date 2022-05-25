@@ -1371,7 +1371,10 @@ ngx_rtmp_relay_close(ngx_rtmp_session_t *s)
         }
 #endif
 
-        if (ctx->publish->play == NULL && ctx->publish->session->relay) {
+        // MODIFICATION:
+        // when relaying with on_publish, `ctx->publish->session->relay` is false but
+        // we still want to disconnect the publisher at this point.
+        if (ctx->publish->play == NULL /* && ctx->publish->session->relay */) {
             ngx_log_debug2(NGX_LOG_DEBUG_RTMP,
                  ctx->publish->session->connection->log, 0,
                 "relay: publish disconnect empty app='%V' name='%V'",
